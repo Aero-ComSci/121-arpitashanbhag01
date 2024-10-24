@@ -10,5 +10,4 @@
 
 4. Choose two snapshots of code that demonstrate the algorithm(s) used to implement the additional features. Explain the code in the screenshots.
 
-
-
+*Graded in class*
