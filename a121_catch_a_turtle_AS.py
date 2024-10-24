@@ -8,11 +8,12 @@ color = "pink"
 size = 2
 shape = "circle"
 score = 0
-foont_setup = ("Arial", 20, "normal")
 font_setup = ("Arial", 20, "normal")
-timer = 5
+timer = 30
 counter_interval = 1000   #1000 represents 1 second
 timer_up = False
+colors = ["red", "orange", "yellow", "green", "purple"]
+sizes = [0.5, 1, 1.5, 2, 2.5, 3]
 
 #-----initialize turtle-----
 spot = trtl.Turtle()
@@ -33,15 +34,31 @@ def update_score():
 def change_position():
     new_xpos = rand.randint(-200, 200)
     new_ypos = rand.randint(-150, 150)
+    spot.penup()
     spot.goto(new_xpos, new_ypos)
     update_score()
 
+def addcolor():
+  randomcolor = rand.choice(colors)
+  spot.color(randomcolor)
+  spot.stamp()
+  spot.color(color)
+
+def changesize():
+  randomsize = rand.choice(sizes)
+  spot.turtlesize(randomsize)
+
 def spot_clicked(x, y):
+    global timer_up
     spot.penup()
     spot.hideturtle()
     change_position()
     spot.pendown()
+    changesize()
+    addcolor()
     spot.showturtle()
+    if timer_up == True:
+      spot.hideturtle()
 
 def countdown():
   global timer, timer_up
@@ -54,6 +71,15 @@ def countdown():
     timer -= 1
     counter.getscreen().ontimer(countdown, counter_interval) 
 
+def start_game():
+    global score, timer, timer_up
+    score = 0
+    timer = 30
+    timer_up = False
+    score_writer.clear()
+    score_writer.write(score, font=font_setup)
+    countdown()
+
 #-----events----------------
 spot.onclick(spot_clicked)
 score_writer.penup()
@@ -62,5 +88,7 @@ counter.penup()
 counter.goto(-100, -100)
 
 wn = trtl.Screen()
+wn.bgcolor("lightblue")
 wn.ontimer(countdown, counter_interval) 
+start_game()
 wn.mainloop()
